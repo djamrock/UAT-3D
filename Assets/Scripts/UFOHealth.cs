@@ -7,8 +7,11 @@ public class UFOHealth : MonoBehaviour
     public int maxHealth = 100;
     public int currentHealth = 100;
     public int pointsForDestroy = 100;
-
     public Image healthBarFill;
+    public AudioClip hitSound;
+    public AudioSource audioSource;
+
+
 
     public void TakeDamage(int damage)
     {
@@ -17,6 +20,11 @@ public class UFOHealth : MonoBehaviour
         if (currentHealth < 0)
         {
             currentHealth = 0;
+        }
+
+        if (hitSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(hitSound);
         }
 
         healthBarFill.fillAmount = (float)currentHealth / maxHealth;
@@ -32,4 +40,13 @@ public class UFOHealth : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
+
 }

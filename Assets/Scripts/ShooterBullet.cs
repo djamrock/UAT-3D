@@ -8,6 +8,10 @@ public class ShooterBullet : Shooter
 
     public GameObject bulletPrefab;
 
+    public AudioClip shootingSound;
+    public AudioSource audioSource;
+
+
 
     public override void Shoot()
     {
@@ -15,11 +19,19 @@ public class ShooterBullet : Shooter
         {
             // create gameObject(object, position, rotation)
             Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation); // creates each bullet when shoot is presses. 
+
+            if (shootingSound != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(shootingSound);
+            }
         }
     }
+
+
+
     public override void Start()
     {
-
+        audioSource = GetComponent<AudioSource>();
     }
 
     public override void Update()
