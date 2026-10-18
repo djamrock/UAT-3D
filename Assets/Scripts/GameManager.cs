@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     public TMP_Text gameOverHighScoreText;
     private const string HighScoreKey = "HighScore";
     public LevelData levelData;
+    public AudioSource musicSource;
 
 
 
