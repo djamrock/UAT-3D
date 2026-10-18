@@ -269,6 +269,9 @@ public class GameManager : MonoBehaviour
 
     public void ActivateGameOverScreen()
     {
+        // Mark the game as ended
+        gameEnded = true;
+
         // Deactivate all states
         DeactivateAllStates();
 
@@ -285,7 +288,6 @@ public class GameManager : MonoBehaviour
         // Activate the Game Over screen
         GameOverScreenStateObject.SetActive(true);
     }
-
     public void ActivateVictoryScreen()
     {
         // Deactivate all states

@@ -421,9 +421,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ad2a6ed814f16e428ba34885520c03d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UFOProximityAudio
-  target: {fileID: 5805648279525609181, guid: 608d2fcc8e20a9345aec522aa3372248, type: 3}
   proximityAudio: {fileID: -3060042372889498813}
-  maxDistance: 100
+  maxDistance: 50
   minVolume: 0
   maxVolume: 1
   fadeSpeed: 2
