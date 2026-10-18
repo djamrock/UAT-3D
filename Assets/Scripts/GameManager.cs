@@ -5,54 +5,35 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-
     public PlayerController playerController;
-
     public List<Obstacle> obstacleList;
-
     public int score;
-
     public TMP_Text text;
-
     public AudioClip victorySound;
-
     public AudioClip failureSound;
-
     public float victoryVolume = 1f;
-
     public AudioSource audioSource;
-
     public bool gameEnded = false;
-
-    public int lives = 3;
-
+    //private int lives = 3;
     public GameObject playerPawnPrefab;
-
     public AsteroidSpawner asteroidSpawner;
-
     public float respawnDelay = 1.5f;
-
     public GameObject gameplayAudioListener;
-
     public AudioListener cameraAudioListener;
-
     public GameObject GameOverScreenStateObject;
-
     public bool startingNewGame = false;
-
     public GameObject TitleScreenStateObject;
-
     public GameObject MainMenuScreenStateObject;
-
     public GameObject OptionsScreenStateObject;
-
     public GameObject CreditsScreenStateObject;
-
     public GameObject GameplayStateObject;
-
     public GameObject VictoryScreenStateObject;
-
     public PlayerLives playerLives;
+    public int highScore;
+    public TMP_Text victoryHighScoreText;
+    public TMP_Text gameOverHighScoreText;
+    private const string HighScoreKey = "HighScore";
+    public LevelData levelData;
 
 
 
@@ -76,6 +57,8 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        highScore = PlayerPrefs.GetInt(HighScoreKey, 0);
     }
 
 
@@ -85,6 +68,32 @@ public class GameManager : MonoBehaviour
         Debug.Log("Score: " + score);
     }
 
+    private void UpdateHighScore()
+    {
+        if (score > highScore)
+        {
+            highScore = score;
+
+            PlayerPrefs.SetInt(HighScoreKey, highScore);
+            PlayerPrefs.Save();
+        }
+
+        UpdateHighScoreDisplays();
+    }
+
+
+    private void UpdateHighScoreDisplays()
+    {
+        if (victoryHighScoreText != null)
+        {
+            victoryHighScoreText.text = "High Score: " + highScore;
+        }
+
+        if (gameOverHighScoreText != null)
+        {
+            gameOverHighScoreText.text = "High Score: " + highScore;
+        }
+    }
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -202,8 +211,24 @@ public class GameManager : MonoBehaviour
 
         if (playerLives != null)
         {
-            playerLives.lives = 3;
+            playerLives.CancelInvoke(nameof(PlayerLives.RespawnPlayer));        // Cancel any delayed respawn from the previous game
+
+            playerLives.ClearExistingPlayerShips();                             // Remove old player ships
+            
+            playerLives.lives = 3;                                              // Reset lives
             playerLives.UpdateLivesUI();
+            
+            playerLives.RespawnPlayer();                                        // Spawn the new player ship
+        }
+
+        if (levelData != null)                                                  // Reset the entities spawned by LevelData
+        {
+            levelData.ResetEntities();
+
+            if (playerController != null && playerController.pawn != null)      // Make the movement limit follow the new ship
+            {
+                levelData.player = playerController.pawn.transform;
+            }
         }
 
         // Activate the Gameplay screen
@@ -269,6 +294,8 @@ public class GameManager : MonoBehaviour
 
     public void ActivateGameOverScreen()
     {
+        UpdateHighScore();
+
         // Mark the game as ended
         gameEnded = true;
 
@@ -290,6 +317,8 @@ public class GameManager : MonoBehaviour
     }
     public void ActivateVictoryScreen()
     {
+        UpdateHighScore();
+
         // Deactivate all states
         DeactivateAllStates();
 

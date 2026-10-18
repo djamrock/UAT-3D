@@ -124,4 +124,23 @@ public class PlayerLives : MonoBehaviour
         Debug.Log("Player respawned successfully!");
     }
 
+
+    public void ClearExistingPlayerShips()
+    {
+        StarShipPawn[] existingShips = FindObjectsByType<StarShipPawn>(FindObjectsInactive.Include);
+
+        foreach (StarShipPawn ship in existingShips)
+        {
+            if (ship != null)
+            {
+                Destroy(ship.gameObject);
+            }
+        }
+
+        if (playerController != null)
+        {
+            playerController.pawn = null;
+        }
+
+    }
 }

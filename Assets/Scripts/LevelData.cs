@@ -17,6 +17,7 @@ public class LevelData : MonoBehaviour
     // Spawn Points
     public List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
     public int numberOfEntitiesToSpawn = 3;
+    private List<GameObject> spawnedEntities = new List<GameObject>();
 
 
     private void Awake()
@@ -67,7 +68,9 @@ public class LevelData : MonoBehaviour
                 int randomIndex = Random.Range(0, matchingPoints.Count);    // Picks a random index from the matching spawn points list
                 SpawnPoint selectedPoint = matchingPoints[randomIndex];     // Gets the spawn point at the randomly selected index
 
-                Instantiate(selectedPoint.entityPrefab, selectedPoint.transform.position, selectedPoint.transform.rotation);        // Creates the selected prefab at the spawn point's position and rotation
+                GameObject spawnedEntity = Instantiate(selectedPoint.entityPrefab, selectedPoint.transform.position, selectedPoint.transform.rotation);        // Creates the selected prefab at the spawn point's position and rotation
+
+                spawnedEntities.Add(spawnedEntity);
 
                 availablePoints.Remove(selectedPoint);                      // Removes the selected point so it cannot be used again
                 spawnedPrefabs.Add(spawnPoint.entityPrefab);                // Records this prefab type so another is not guaranteed in the first loop
@@ -88,11 +91,27 @@ public class LevelData : MonoBehaviour
 
             if (selectedPoint.entityPrefab != null)                                     // Checks if the selected point has a prefab assigned
             {
-                Instantiate(selectedPoint.entityPrefab, selectedPoint.transform.position, selectedPoint.transform.rotation);    // Creates the prefab at the selected spawn point's position and rotation
+                GameObject spawnedEntity = Instantiate(selectedPoint.entityPrefab, selectedPoint.transform.position, selectedPoint.transform.rotation);        // Creates the selected prefab at the spawn point's position and rotation
+
+                spawnedEntities.Add(spawnedEntity);
             }
         }
     }
 
+    public void ResetEntities()
+    {
+        foreach (GameObject entity in spawnedEntities)
+        {
+            if (entity != null)
+            {
+                Destroy(entity);
+            }
+        }
+
+        spawnedEntities.Clear();
+
+        SpawnEntities();
+    }
 
     void LateUpdate()
     {
