@@ -40,13 +40,13 @@ public class LevelData : MonoBehaviour
 
     void SpawnEntities()
     {
-        List<SpawnPoint> availablePoints = new List<SpawnPoint>(spawnPoints);       // Creates a copy of the spawn points so we can remove used points without changing the original list
-        List<GameObject> spawnedPrefabs = new List<GameObject>();                   // Creates an empty list to keep track of which prefab types have been spawned
+        List<SpawnPoint> availablePoints = new List<SpawnPoint>(spawnPoints);       // tracks locations; Creates a copy of the spawn points so we can remove used points without changing the original list
+        List<GameObject> spawnedPrefabs = new List<GameObject>();                   // tracks prefab types; Creates an empty list to keep track of which prefab types have been spawned
 
         // Spawn one of each entity type.
         foreach (SpawnPoint spawnPoint in spawnPoints)                  // Goes through each spawn point in the original spawn point list
         {
-            if (spawnPoint.entityPrefab == null) continue;              // Checks if this spawn point has a prefab assigned; skips it if it does not
+            if (spawnPoint.entityPrefab == null) continue;              // Checks if this spawn point has a prefab assigned; skips it if not
 
             // Skip this type if we already spawned it.
             if (spawnedPrefabs.Contains(spawnPoint.entityPrefab)) continue;        // Checks if this prefab type has already been spawned; skips it if it has
