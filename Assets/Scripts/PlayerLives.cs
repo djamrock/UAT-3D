@@ -1,4 +1,6 @@
 using UnityEngine;
+using TMPro;
+
 
 public class PlayerLives : MonoBehaviour
 {
@@ -20,6 +22,8 @@ public class PlayerLives : MonoBehaviour
     public PlayerController playerController;
 
     public GameObject GameOverScreenStateObject;
+
+    public TMP_Text healthValuetext;
 
 
     public void UpdateLivesUI()         // Updates the life icons in the top right of the gameplay UI
@@ -93,11 +97,16 @@ public class PlayerLives : MonoBehaviour
         Vector3 spawnPosition = new Vector3(0f, 3f, 0f);
 
         // Create a new ship at the spawn position.
-        GameObject newShip = Instantiate(
-            playerPawnPrefab,
-            spawnPosition,
-            Quaternion.identity
-        );
+        GameObject newShip = Instantiate(playerPawnPrefab, spawnPosition, Quaternion.identity);
+
+        // Connect the new ship's health component to the UI text
+        ShipHealth shipHealth = newShip.GetComponent<ShipHealth>();
+
+        if (shipHealth != null)
+        {
+            shipHealth.healthText = healthValuetext;
+            shipHealth.UpdateHealthText();
+        }
 
         // Get the Pawn component from the new ship.
         Pawn newPawn = newShip.GetComponent<Pawn>();

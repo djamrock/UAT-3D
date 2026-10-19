@@ -4,24 +4,6 @@ using UnityEngine;
 public class PlayerController : Controller
 {
 
-    //// W
-    //public KeyCode moveForward;
-    //// S
-    //public KeyCode moveBackward;
-
-    //public KeyCode yawLeft();
-
-    //public abstract void YawRight();
-
-    //public abstract void RollLeft();
-
-    //public abstract void RollRight();
-
-    //public abstract void PitchUp();
-
-    //public abstract void PitchDown();
-
-    //Shoot
     public KeyCode shootKey;
 
     public override void MakeDecisions()  // This is all of the player movement

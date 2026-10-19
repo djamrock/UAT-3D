@@ -42,6 +42,8 @@ public class ShipHealth : MonoBehaviour
             currentHealth = 0;
         }
 
+        UpdateHealthText();
+
         Debug.Log("Ship health: " + currentHealth);
 
         if (currentHealth == 0)         // When health reaches zero, looks for ShipDeath component of that game object (StarShipPawn)
